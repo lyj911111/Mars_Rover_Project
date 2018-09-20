@@ -42,6 +42,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "Robot_kjy.h"
+#include "Robot_lwj.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -50,6 +51,7 @@ RTC_HandleTypeDef hrtc;
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim10;
+TIM_HandleTypeDef htim11;
 
 UART_HandleTypeDef huart3;
 
@@ -66,6 +68,7 @@ static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_RTC_Init(void);
+static void MX_TIM11_Init(void);
                                     
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -74,6 +77,16 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
+/*
+ * 타이머 업데이트 콜백함수
+ * 인터럽트에 맞춰 실행할 함수나 코드를 작성하여 밑에다가 작성
+ * 작성시 if문을 사용하여 htim->instance 의 TIM이 몇인지 확인하고 실행하는 코드를 사용
+ * ex)  if(htim->instance == TIM10){}
+ * */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    Generation_pulse(htim);
+}
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -113,6 +126,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM10_Init();
   MX_RTC_Init();
+  MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -370,6 +384,22 @@ static void MX_TIM10_Init(void)
   htim10.Init.Period = 1000;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
+/* TIM11 init function */
+static void MX_TIM11_Init(void)
+{
+
+  htim11.Instance = TIM11;
+  htim11.Init.Prescaler = 1600;
+  htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim11.Init.Period = 1000;
+  htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
