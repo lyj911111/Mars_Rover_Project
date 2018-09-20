@@ -41,7 +41,7 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "Robot_kjy.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -77,7 +77,8 @@ static void MX_RTC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  int a= GO;
+  WTF();
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
