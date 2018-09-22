@@ -9,5 +9,13 @@
 #define ROBOT_JHM_H_
 
 #include "stm32f4xx_hal.h"
+#include "Robot_kjy.h"
+#include "Robot_lwj.h"
+
+#define Calibration1 129
+#define Calibration2 130
+
+
 
 #endif /* ROBOT_JHM_H_ */
+

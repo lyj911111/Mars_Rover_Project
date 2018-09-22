@@ -43,6 +43,7 @@
 /* USER CODE BEGIN Includes */
 #include "Robot_kjy.h"
 #include "Robot_lwj.h"
+#include "Robot_jhm.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -50,6 +51,7 @@ RTC_HandleTypeDef hrtc;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim10;
 TIM_HandleTypeDef htim11;
 
@@ -60,6 +62,15 @@ UART_HandleTypeDef huart3;
 
 
 volatile extern uint32_t WHEEL_SPEED;	// 타이머 Pulse 최대값: 180 (최고속도)
+
+int rc_dutycycle_1;
+int rc_dutycycle_2;
+int rc_dutycycle_3;
+int rc_dutycycle_4;
+int rc_dutycycle_5;
+int rc_dutycycle_6;
+
+char str[100] = {0,};
 
 /* USER CODE END PV */
 
@@ -72,6 +83,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_RTC_Init(void);
 static void MX_TIM11_Init(void);
+static void MX_TIM3_Init(void);
                                     
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -89,6 +101,33 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     Generation_pulse(htim);
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	HAL_GPIO_TogglePin(GPIOB, Blue_LED_Pin);			//callback debug
+
+	if(GPIO_Pin == GPIO_EXTI3_Pin){ 					//(EXTI PIN)PE3 : 1ch
+		RC_Return_dutycycle(rc_dutycycle_1);
+	}
+
+//	else if (GPIO_Pin == GPIO_EXTI4_Pin){				//(EXTI PIN)PE4 : 2ch
+//		RC_Return_dutycycle(rc_dutycycle_2);
+//	}
+//	else if (GPIO_Pin == GPIO_EXTI5_Pin){				//(EXTI PIN)PE5 : 3ch
+//		RC_Return_dutycycle(rc_dutycycle_3);
+//	}
+//	else if (GPIO_Pin == GPIO_EXTI6_Pin){				//(EXTI PIN)PE6 : 4ch
+//		RC_Return_dutycycle(rc_dutycycle_4);
+//	}
+//	else if (GPIO_Pin == GPIO_EXTI7_Pin){				//(EXTI PIN)PF7 : 5ch
+//		RC_Return_dutycycle(rc_dutycycle_5);
+//	}
+//	else if (GPIO_Pin == GPIO_EXTI8_Pin){				//(EXTI PIN)PF8 : 6ch
+//		RC_Return_dutycycle(rc_dutycycle_6);
+//	}
+
+
 }
 /* USER CODE END PFP */
 
@@ -131,6 +170,7 @@ int main(void)
   MX_TIM10_Init();
   MX_RTC_Init();
   MX_TIM11_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);	// 6개 바퀴 PWM발생. (주기 5kHz 발생)
@@ -153,6 +193,13 @@ int main(void)
 	   //Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 1 );  // 바퀴함수테스트
 	   //Wheel_Contorl( WHEEL_R_D , WHEEL_BACKWARD , 180);
 
+//	  sprintf(str,
+//			  "1ch: %d,2ch: %d,3ch: %d,4ch: %d,5ch: %d,6ch: %d\r\n",
+//			  rc_dutycycle_1,rc_dutycycle_2,rc_dutycycle_3,
+//			  rc_dutycycle_4,rc_dutycycle_5,rc_dutycycle_6); 			//debug_jhm
+	  sprintf(str, "1ch: %d\r\n", rc_dutycycle_1);
+	  HAL_UART_Transmit_IT(&huart3, str, sizeof(str));					//debug_jhm
+	  HAL_Delay(100);													//debug_jhm
 
   }
   /* USER CODE END 3 */
@@ -387,6 +434,38 @@ static void MX_TIM2_Init(void)
 
 }
 
+/* TIM3 init function */
+static void MX_TIM3_Init(void)
+{
+
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
+
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 90;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
 /* TIM10 init function */
 static void MX_TIM10_Init(void)
 {
@@ -468,10 +547,10 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PE3 PE4 PE5 PE6 */
-  GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  /*Configure GPIO pins : GPIO_EXTI3_Pin GPIO_EXTI4_Pin GPIO_EXTI5_Pin GPIO_EXTI6_Pin */
+  GPIO_InitStruct.Pin = GPIO_EXTI3_Pin|GPIO_EXTI4_Pin|GPIO_EXTI5_Pin|GPIO_EXTI6_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin : User_Button_Pin */
@@ -480,10 +559,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(User_Button_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PF7 PF8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  /*Configure GPIO pins : GPIO_EXTI7_Pin GPIO_EXTI8_Pin */
+  GPIO_InitStruct.Pin = GPIO_EXTI7_Pin|GPIO_EXTI8_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Red_LED_Pin Blue_LED_Pin */
@@ -508,6 +587,16 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 

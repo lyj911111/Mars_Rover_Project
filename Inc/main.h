@@ -49,8 +49,26 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define GPIO_EXTI3_Pin GPIO_PIN_3
+#define GPIO_EXTI3_GPIO_Port GPIOE
+#define GPIO_EXTI3_EXTI_IRQn EXTI3_IRQn
+#define GPIO_EXTI4_Pin GPIO_PIN_4
+#define GPIO_EXTI4_GPIO_Port GPIOE
+#define GPIO_EXTI4_EXTI_IRQn EXTI4_IRQn
+#define GPIO_EXTI5_Pin GPIO_PIN_5
+#define GPIO_EXTI5_GPIO_Port GPIOE
+#define GPIO_EXTI5_EXTI_IRQn EXTI9_5_IRQn
+#define GPIO_EXTI6_Pin GPIO_PIN_6
+#define GPIO_EXTI6_GPIO_Port GPIOE
+#define GPIO_EXTI6_EXTI_IRQn EXTI9_5_IRQn
 #define User_Button_Pin GPIO_PIN_13
 #define User_Button_GPIO_Port GPIOC
+#define GPIO_EXTI7_Pin GPIO_PIN_7
+#define GPIO_EXTI7_GPIO_Port GPIOF
+#define GPIO_EXTI7_EXTI_IRQn EXTI9_5_IRQn
+#define GPIO_EXTI8_Pin GPIO_PIN_8
+#define GPIO_EXTI8_GPIO_Port GPIOF
+#define GPIO_EXTI8_EXTI_IRQn EXTI9_5_IRQn
 #define Red_LED_Pin GPIO_PIN_14
 #define Red_LED_GPIO_Port GPIOB
 #define Blue_LED_Pin GPIO_PIN_7

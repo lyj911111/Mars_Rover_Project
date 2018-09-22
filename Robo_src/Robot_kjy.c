@@ -12,7 +12,7 @@
  *
  *
  * */
-void Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
+void ARM_Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
 {
     if(RC_instance > STEP_FORWARD_RC){
         HAL_GPIO_WritePin(STEP_DIR_PORT,STEP_DIR_PINNUM,STEP_FORWARD);
@@ -26,7 +26,7 @@ void Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
         HAL_TIM_Base_Start_IT(htim);
     }
 }
-void Generation_pulse(TIM_HandleTypeDef* htim)
+void ARM_Generation_pulse(TIM_HandleTypeDef* htim)
 {
     static uint32_t count=0;
     static uint32_t toggle=0;
