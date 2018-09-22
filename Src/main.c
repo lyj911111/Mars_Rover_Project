@@ -58,7 +58,7 @@ UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
-uint32_t WHEEL_SPEED;
+extern uint32_t WHEEL_SPEED;
 
 /* USER CODE END PV */
 
@@ -149,7 +149,8 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  Wheel_Contorl( WHEEL_R_U , WHEEL_BACKWARD , WHEEL_SPEED );
+	  Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 300 );
+	  Wheel_Contorl( WHEEL_L_U , WHEEL_FORWARD , 500 );
   }
   /* USER CODE END 3 */
 
@@ -272,7 +273,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 100;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 900;
+  htim1.Init.Period = 1800;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
@@ -351,7 +352,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 100;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 900;
+  htim2.Init.Period = 1800;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {
