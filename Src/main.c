@@ -59,7 +59,7 @@ UART_HandleTypeDef huart3;
 /* Private variables ---------------------------------------------------------*/
 
 
-volatile extern uint32_t WHEEL_SPEED;	// 타이머 Pulse 최대값: 900 (최고속도)
+volatile extern uint32_t WHEEL_SPEED;	// 타이머 Pulse 최대값: 180 (최고속도)
 
 /* USER CODE END PV */
 
@@ -133,7 +133,7 @@ int main(void)
   MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);	// 6개 바퀴 PWM발생. (주기 1kHz 발생)
+  HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);	// 6개 바퀴 PWM발생. (주기 5kHz 발생)
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_4);
@@ -150,7 +150,9 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  // Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 900 ); // 바퀴함수테스트
+	   //Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 1 );  // 바퀴함수테스트
+	   //Wheel_Contorl( WHEEL_R_D , WHEEL_BACKWARD , 180);
+
 
   }
   /* USER CODE END 3 */
@@ -274,7 +276,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 100;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 900;
+  htim1.Init.Period = 180;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
@@ -353,7 +355,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 100;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 900;
+  htim2.Init.Period = 180;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {
