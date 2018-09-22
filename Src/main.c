@@ -59,7 +59,7 @@ UART_HandleTypeDef huart3;
 /* Private variables ---------------------------------------------------------*/
 
 
-volatile extern uint32_t WHEEL_SPEED;	// 타이머1 Pulse 최대값 : 1800, 타이머2 Pulse 최대값: 900
+volatile extern uint32_t WHEEL_SPEED;	// 타이머 Pulse 최대값: 900 (최고속도)
 
 /* USER CODE END PV */
 
