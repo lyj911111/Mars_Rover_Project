@@ -3,16 +3,16 @@
 
 #include "stm32f4xx_hal.h"
 
-#define WHEEL_FORWARD 	0
-#define WHEEL_BACKWARD 	1
+#define WHEEL_FORWARD 	0	//	전진방향
+#define WHEEL_BACKWARD 	1	//	후진방향
 
 // 약어 뜻. R: Right , L: Left , M: Middle , U: Up , D: Down
 enum{
 	WHEEL_R_U , WHEEL_L_U, WHEEL_R_M, WHEEL_L_M, WHEEL_R_D, WHEEL_L_D
 };
 
-TIM_HandleTypeDef htim1;
-TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim1;	//	앞바퀴, 중간바퀴 Pulse제어 (최대값 900)
+TIM_HandleTypeDef htim2;	//	뒷바퀴 Pulse제어 (최대값 900)
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse);
 
