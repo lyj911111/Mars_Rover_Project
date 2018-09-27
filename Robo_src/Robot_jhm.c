@@ -8,24 +8,32 @@
 
 #include "Robot_jhm.h"
 
-int RC_Return_dutycycle(int rc_dutycycle){
-	static uint32_t t3_tick = 0;			//t3_tick: 1.00us
-	static uint8_t flag = 0;
-	static int cycle1, cycle2;
+//int rc_dutycycle_1;
+//int rc_dutycycle_2;
+//int rc_dutycycle_3;
+//int rc_dutycycle_4;
+//int rc_dutycycle_5;
+//int rc_dutycycle_6;
+//int rc_dutycycle_7;
 
-	t3_tick = TIM3->CNT;					//tim3 count register
+void RC_Return_dutycycle(int rc_dutycycle){
+	static uint8_t flag = 0;
+	static int high_width, low_width;
 
 	if(flag){
-		flag = 0, cycle1 = t3_tick;
+		flag = 0, high_width = TIM3->CNT;
 	}
 	else{
-		flag = 1, cycle2 = t3_tick;
+		flag = 1, low_width = TIM3->CNT;
 	}
 
 	TIM3->CNT = 0;
 
-	if(cycle1 < cycle2) rc_dutycycle = cycle1;
-	else 				rc_dutycycle = cycle2;
+	if(high_width < low_width) 	rc_dutycycle = high_width;
+	else						rc_dutycycle = low_width;
 
-	return rc_dutycycle;
+//	if(high_width < low_width) rc_dutycycle = high_width;
+//	else 					   rc_dutycycle = low_width;
+//
+//	return rc_dutycycle;
 }

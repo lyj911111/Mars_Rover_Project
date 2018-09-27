@@ -69,6 +69,9 @@
 #define GPIO_EXTI8_Pin GPIO_PIN_8
 #define GPIO_EXTI8_GPIO_Port GPIOF
 #define GPIO_EXTI8_EXTI_IRQn EXTI9_5_IRQn
+#define GPIO_EXTI9_Pin GPIO_PIN_9
+#define GPIO_EXTI9_GPIO_Port GPIOF
+#define GPIO_EXTI9_EXTI_IRQn EXTI9_5_IRQn
 #define Red_LED_Pin GPIO_PIN_14
 #define Red_LED_GPIO_Port GPIOB
 #define Blue_LED_Pin GPIO_PIN_7
