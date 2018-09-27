@@ -22,7 +22,15 @@ volatile  uint16_t ch4_rising, ch4_falling;
 volatile  uint16_t ch5_rising, ch5_falling;
 volatile  uint16_t ch6_rising, ch6_falling;
 volatile  uint16_t ch7_rising, ch7_falling;
-
+/*			MAX				MIDDLE			MIN
+ * CH1  	3865~3871		3032~3077		2190~2196
+ * CH2		3854~3859		3029~3078		2180~2186
+ * CH3		3840~3850		3000~3040		2180~2200
+ * CH4		3830~3850		3000~3040		2150~2180
+ * CH5		3830~3850		3000~3040		2150~2180
+ * CH6		3830~3850		3000~3040		2150~2180
+ * CH7		3830~3850		3000~3040		2150~2180
+ * */
 void RC_Return_dutycycle(uint32_t GPIO_Pin){
     GPIO_InitTypeDef my1_GPIO_InitStruct;
     GPIO_InitTypeDef my2_GPIO_InitStruct;

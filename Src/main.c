@@ -63,26 +63,7 @@ UART_HandleTypeDef huart3;
 
 volatile extern uint32_t WHEEL_SPEED;	// 타이머 Pulse 최대값: 180 (최고속도)
 
-volatile int rc_dutycycle_1;
-volatile int rc_dutycycle_2;
-volatile int rc_dutycycle_3;
-volatile int rc_dutycycle_4;
-volatile int rc_dutycycle_5;
-volatile int rc_dutycycle_6;
-volatile int rc_dutycycle_7;
-
 char str[100] = {0,};
-
-
-volatile uint16_t ch1_rising, ch1_falling;
-volatile uint16_t ch2_rising, ch2_falling;
-volatile uint16_t ch3_rising, ch3_falling;
-volatile uint16_t ch4_rising, ch4_falling;
-volatile uint16_t ch5_rising, ch5_falling;
-volatile uint16_t ch6_rising, ch6_falling;
-volatile uint16_t ch7_rising, ch7_falling;
-
-
 
 /* USER CODE END PV */
 
@@ -187,13 +168,10 @@ int main(void)
 	   //Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 1 );  // 바퀴함수테스트
 	   //Wheel_Contorl( WHEEL_R_D , WHEEL_BACKWARD , 180);
 
-//	  sprintf(str,
-//			  "1ch: %d,2ch: %d,3ch: %d,4ch: %d,5ch: %d,6ch: %d\r\n",
-//			  rc_dutycycle_1,rc_dutycycle_2,rc_dutycycle_3,
-//			  rc_dutycycle_4,rc_dutycycle_5,rc_dutycycle_6); 			//debug_jhm
-	  sprintf(str, "1ch: %04d, 2ch: %04d, 3ch: %04d, 4ch: %04d, 5ch: %04d, 6ch: %04d, 7ch: %04d\r\n",
-			  rc_dutycycle_1, rc_dutycycle_2, rc_dutycycle_3,
-			  rc_dutycycle_4, rc_dutycycle_5, rc_dutycycle_6, rc_dutycycle_7);
+//
+	  sprintf(str, "1ch: %04u, 2ch: %04u, 3ch: %04u, 4ch: %04u, 5ch: %04u, 6ch: %04u, 7ch: %04u\r\n",
+			  RC_Read(1), RC_Read(2), RC_Read(3),
+			  RC_Read(4), RC_Read(5), RC_Read(6), RC_Read(7));
 	  HAL_UART_Transmit_IT(&huart3, str, sizeof(str));					//debug_jhm
 	  HAL_Delay(100);
 
