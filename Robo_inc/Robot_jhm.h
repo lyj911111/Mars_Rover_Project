@@ -15,7 +15,8 @@
 #define Calibration1 129
 #define Calibration2 130
 
-void RC_Return_dutycycle(int rc_dutycycle);
+void RC_Return_dutycycle(uint32_t GPIO_Pin);
+int RC_Read(uint32_t interrupt);
 
 #endif /* ROBOT_JHM_H_ */
 
