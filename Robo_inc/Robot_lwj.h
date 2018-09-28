@@ -15,6 +15,9 @@ enum{
 TIM_HandleTypeDef htim1;	//	앞바퀴, 중간바퀴 Pulse제어 (최대값 180)
 TIM_HandleTypeDef htim2;	//	뒷바퀴 Pulse제어 (최대값 180)
 
+
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse);
+void Wheel_Break(const uint8_t Wheel_select, uint32_t Break_PWM);
+
 
 #endif
