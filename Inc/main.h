@@ -85,6 +85,30 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
+#define TOGGLE_CH   6
+#define LIMIT_CH    5
+/* Ã¤³Î°ü·ÃÇÉ
+ * PE3 : 1ch    PE4 : 2ch    PE5 : 3ch      PE6 : 4ch
+ * PF7 : 5ch    PF8 : 6ch    PF9 : 7ch
+ * */
+/*  ¹ÙÄû ±âµ¿ PWM
+ *  [GPIOÇÉ]  [Å¸ÀÌ¸ÓÇÉ] [¹ÙÄû]
+ *  PC8       PE9       WhEEL_R_U
+ *  PC9       PE11      WhEEL_L_U
+ *  PC10      PE13      WhEEL_R_M
+ *  PC11      PE14      WhEEL_L_M
+ *  PC12      PA5       WhEEL_R_D
+ *  PD2       PB10      WhEEL_L_D
+ *
+ *  ¹ÙÄû Á¦µ¿ PWM
+ * [Å¸ÀÌ¸ÓÇÉ]  [¹ÙÄû]
+ *  PD12    WhEEL_R_U
+ *  PD13    WhEEL_L_U
+ *  PD14    WhEEL_R_M
+ *  PD15    WhEEL_L_M
+ *  PA0     WhEEL_R_D
+ *  PA1     WhEEL_L_D
+ */
 
 /* USER CODE END Private defines */
 

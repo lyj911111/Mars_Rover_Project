@@ -45,6 +45,7 @@
 #include "Robot_lwj.h"
 #include "Robot_jhm.h"
 #include "Robot_khy.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -98,7 +99,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
  * */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    Generation_pulse(htim);
+    ARM_Generation_pulse(htim);
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -108,7 +109,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+#define test_wheel  WHEEL_L_U
+#define test_wheel1 WHEEL_R_U
 /* USER CODE END 0 */
 
 /**
@@ -158,31 +160,72 @@ int main(void)
   HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_3);
 
+  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);  // 6개 바퀴 PWM발생. (주기 5kHz 발생)
+  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_2);
+
 
   HAL_TIM_Base_Start(&htim3);
   TIM3->CNT = 0;
   char str[100] = {0};
+  uint32_t Pulse=0;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+      uint32_t break_pulse=0;
+      uint32_t move_pulse=0;
+      uint32_t toggle=0,limit=0;
+      uint32_t direction=WHEEL_FORWARD;
+      Pulse = RC_Read(2);
+      toggle = RC_Read(TOGGLE_CH);
+      limit = RC_MAX-RC_Read(LIMIT_CH)+RC_MIN;
+      limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
+
+      if(toggle>RC_TOGGLE_MAX)
+          direction = WHEEL_FORWARD;
+      else if(toggle < RC_TOGGLE_MAX && toggle > RC_TOGGLE_MIN)
+          direction = WHEEL_IDLE;
+      else if(toggle < RC_TOGGLE_MIN)
+          direction = WHEEL_BACKWARD;
+
+      if(Pulse>RC_MID1){
+          constrain(Pulse,RC_MID1,RC_MAX);
+          move_pulse = math_Map(Pulse, RC_MID1, RC_MAX, PULSE_MIN , PULSE_MAX);
+          constrain(move_pulse,0,limit);
+          Wheel_Contorl(test_wheel, direction,move_pulse);
+          Wheel_Contorl(test_wheel1, !direction,move_pulse);
+      }
+      else if(Pulse<=RC_MID1 && Pulse>=RC_MID2){
+          Wheel_Contorl(test_wheel, direction,0);
+          Wheel_Break(test_wheel, 0);
+          Wheel_Contorl(test_wheel1, !direction,0);
+          Wheel_Break(test_wheel1, 0);
+      }
+      else{
+          constrain(Pulse,RC_MIN,RC_MID2);
+          Pulse=RC_MID2-Pulse+RC_MIN;
+          break_pulse = math_Map(Pulse, RC_MIN, RC_MID2, PULSE_MIN , PULSE_MAX);
+          Wheel_Contorl(test_wheel, direction,0);
+          Wheel_Break(test_wheel, break_pulse);
+          Wheel_Contorl(test_wheel1, !direction,0);
+          Wheel_Break(test_wheel1, break_pulse);
+      }
+
+
+     sprintf(str,"%04lu\n", break_pulse);
+     HAL_UART_Transmit_IT(&huart3, (uint8_t*)str, (uint16_t)strlen(str));
+
 
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	   //Wheel_Contorl( WHEEL_R_U , WHEEL_FORWARD , 1 );  // 바퀴함수테스트
-	   //Wheel_Contorl( WHEEL_R_D , WHEEL_BACKWARD , 180);
-
-//
-	  sprintf(str, "1ch: %04lu, 2ch: %04lu, 3ch: %04lu, 4ch: %04lu, 5ch: %04lu, 6ch: %04lu, 7ch: %04lu\n",
-			  RC_Read(1), RC_Read(2), RC_Read(3),
-			  RC_Read(4), RC_Read(5), RC_Read(6), RC_Read(7));
-	  HAL_UART_Transmit_IT(&huart3,(char*)str, sizeof(str));					//debug_jhm
-	  HAL_Delay(100);
-
-
   }
   /* USER CODE END 3 */
 
@@ -547,9 +590,9 @@ static void MX_TIM10_Init(void)
 {
 
   htim10.Instance = TIM10;
-  htim10.Init.Prescaler = 1600;
+  htim10.Init.Prescaler = 800;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim10.Init.Period = 1000;
+  htim10.Init.Period = 25000;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
   {
@@ -614,7 +657,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Red_LED_Pin|Blue_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11|Red_LED_Pin|Blue_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
@@ -640,6 +683,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Red_LED_Pin Blue_LED_Pin */
   GPIO_InitStruct.Pin = Red_LED_Pin|Blue_LED_Pin;

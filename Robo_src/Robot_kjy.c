@@ -14,7 +14,7 @@
  * */
 void ARM_Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
 {
-    if(RC_instance > STEP_FORWARD_RC){
+    /*if(RC_instance > STEP_FORWARD_RC){
         HAL_GPIO_WritePin(STEP_DIR_PORT,STEP_DIR_PINNUM,STEP_FORWARD);
         HAL_TIM_Base_Start_IT(htim);
     }
@@ -24,7 +24,11 @@ void ARM_Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
     else{
         HAL_GPIO_WritePin(STEP_DIR_PORT,STEP_DIR_PINNUM,STEP_BACKWARD);
         HAL_TIM_Base_Start_IT(htim);
-    }
+    }*/
+    if(RC_instance > 3300)
+        HAL_TIM_Base_Start_IT(htim);
+    else
+        HAL_TIM_Base_Stop_IT(htim);
 }
 void ARM_Generation_pulse(TIM_HandleTypeDef* htim)
 {

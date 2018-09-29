@@ -20,7 +20,7 @@
  * 	PC9		  PE11		WhEEL_L_U
  * 	PC10 	  PE13		WhEEL_R_M
  * 	PC11 	  PE14		WhEEL_L_M
- *	PC12	  PA0		WhEEL_R_D
+ *	PC12	  PA5		WhEEL_R_D
  *	PD2 	  PB10		WhEEL_L_D
  *
  *	함수 Parameter.
@@ -29,9 +29,11 @@
  *		세번째 인자 : Wheel_Speed
  */
 
+
+
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
-	if(Wheel_direction == WHEEL_STOP)	//	기어 중립
+	if(Wheel_direction == WHEEL_IDLE)	//	기어 중립
 	{
 		PWM_Pulse = 0;
 	}
