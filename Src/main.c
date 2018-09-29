@@ -44,6 +44,7 @@
 #include "Robot_kjy.h"
 #include "Robot_lwj.h"
 #include "Robot_jhm.h"
+#include "Robot_khy.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/

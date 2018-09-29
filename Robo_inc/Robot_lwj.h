@@ -3,9 +3,9 @@
 
 #include "stm32f4xx_hal.h"
 
-#define WHEEL_STOP		0	//	정지
+#define WHEEL_STOP		2	//	정지
 #define WHEEL_FORWARD 	1	//	전진방향
-#define WHEEL_BACKWARD 	2	//	후진방향
+#define WHEEL_BACKWARD 	0	//	후진방향
 
 // 약어 뜻. R: Right , L: Left , M: Middle , U: Up , D: Down
 enum{
