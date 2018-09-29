@@ -67,7 +67,6 @@ UART_HandleTypeDef huart3;
 volatile uint32_t Wheel_Speed;
 volatile uint32_t Break_PWM;
 
-char str[100] = {0,};
 
 /* USER CODE END PV */
 
@@ -162,7 +161,7 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim3);
   TIM3->CNT = 0;
-
+  char str[100] = {0};
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -177,10 +176,10 @@ int main(void)
 	   //Wheel_Contorl( WHEEL_R_D , WHEEL_BACKWARD , 180);
 
 //
-	  sprintf(str, "1ch: %04u, 2ch: %04u, 3ch: %04u, 4ch: %04u, 5ch: %04u, 6ch: %04u, 7ch: %04u\r\n",
+	  sprintf(str, "1ch: %04lu, 2ch: %04lu, 3ch: %04lu, 4ch: %04lu, 5ch: %04lu, 6ch: %04lu, 7ch: %04lu\n",
 			  RC_Read(1), RC_Read(2), RC_Read(3),
 			  RC_Read(4), RC_Read(5), RC_Read(6), RC_Read(7));
-	  HAL_UART_Transmit_IT(&huart3, str, sizeof(str));					//debug_jhm
+	  HAL_UART_Transmit_IT(&huart3,(char*)str, sizeof(str));					//debug_jhm
 	  HAL_Delay(100);
 
 
