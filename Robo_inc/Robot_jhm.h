@@ -14,6 +14,7 @@
 
 #define Calibration1 129
 #define Calibration2 130
+#define MAX_CHANNEL 7
 
 void RC_Return_dutycycle(uint32_t GPIO_Pin);
 uint32_t RC_Read(uint32_t interrupt);

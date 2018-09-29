@@ -9,7 +9,7 @@
 #include "Robot_jhm.h"
 volatile uint32_t rc_dutycycle[7];
 volatile uint16_t ch_rising[7], ch_falling[7];
-
+static GPIO_InitTypeDef my_GPIO_InitStruct[7];
 
 /*			MAX				MIDDLE			MIN
  * CH1  	3865~3871		3032~3077		2190~2196
@@ -27,9 +27,8 @@ volatile uint16_t ch_rising[7], ch_falling[7];
 
 GPIO_TypeDef* gpio[7]={GPIOE,GPIOE,GPIOE,GPIOE,GPIOF,GPIOF,GPIOF};
 void RC_Return_dutycycle(uint32_t GPIO_Pin){
-    static GPIO_InitTypeDef my_GPIO_InitStruct[7];
     int i=0;
-    for(i=0;i<7;i++){
+    for(i=0;i<MAX_CHANNEL;i++){
         if(GPIO_Pin == (uint16_t)(1<<(i+3))){
             if(my_GPIO_InitStruct[i].Mode == GPIO_MODE_IT_RISING){
                 ch_rising[i] = TIM3->CNT;
