@@ -16,12 +16,12 @@
  * 	위 3개의 인자를 받아서 바퀴를 선택하고, 그에 따른 앞 뒤 방향선택 또는 멈춤선택, 바퀴속도를 제어 0~180범위
  * 	바퀴 선 연결시 참고.
  * 	[GPIO핀]  [타이머핀]	[바퀴]
- * 	PC8		PE9			WhEEL_R_U
- * 	PC9		PE11		WhEEL_L_U
- * 	PC10	PE13		WhEEL_R_M
- * 	PC11	PE14		WhEEL_L_M
- *	PC12	PA5			WhEEL_R_D
- *	PD2		PB10		WhEEL_L_D
+ * 	PC8      PE9        WhEEL_R_U
+ * 	PC9      PE11       WhEEL_L_U
+ * 	PC10     PE13       WhEEL_R_M
+ * 	PC11     PE14       WhEEL_L_M
+ *	PC12     PA5        WhEEL_R_D
+ *	PD2      PB10       WhEEL_L_D
  *
  *	함수 Parameter.
  *		첫번째 인자 : WHEEL_R_U , WHEEL_L_U, WHEEL_R_M, WHEEL_L_M, WHEEL_R_D, WHEEL_L_D 중에 하나.
@@ -76,12 +76,12 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
  * 	위 2개의 인자를 받음. 바퀴를 선택하고, 바퀴속도 Break를 하는 PWM파형을 출력.
  * 	바퀴 선 연결시 참고.
  * 	[타이머핀]	[바퀴]
- * 	PD12	WhEEL_R_U
- * 	PD13	WhEEL_L_U
- * 	PD14	WhEEL_R_M
- * 	PD15	WhEEL_L_M
- *	PA0 	WhEEL_R_D
- *	PA1		WhEEL_L_D
+ * 	PD12    WhEEL_R_U
+ * 	PD13    WhEEL_L_U
+ * 	PD14    WhEEL_R_M
+ * 	PD15    WhEEL_L_M
+ *	PA0     WhEEL_R_D
+ *	PA1     WhEEL_L_D
  *
  *	함수 Parameter.
  *		첫번째 인자 : WHEEL_R_U , WHEEL_L_U, WHEEL_R_M, WHEEL_L_M, WHEEL_R_D, WHEEL_L_D 중에 하나.
