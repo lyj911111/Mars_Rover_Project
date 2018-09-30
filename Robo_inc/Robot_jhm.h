@@ -24,6 +24,7 @@
 #define RC_TOGGLE_MIN   2700UL
 #define RC_MIN          2200UL
 
+
 void RC_Return_dutycycle(uint32_t GPIO_Pin);
 uint32_t RC_Read(uint32_t interrupt);
 
@@ -41,3 +42,18 @@ uint32_t RC_Read(uint32_t interrupt);
  * PE3 : 1ch    PE4 : 2ch    PE5 : 3ch      PE6 : 4ch
  * PF7 : 5ch    PF8 : 6ch    PF9 : 7ch
  * */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

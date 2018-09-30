@@ -85,8 +85,7 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-#define TOGGLE_CH   6
-#define LIMIT_CH    5
+
 /* Ã¤³Î°ü·ÃÇÉ
  * PE3 : 1ch    PE4 : 2ch    PE5 : 3ch      PE6 : 4ch
  * PF7 : 5ch    PF8 : 6ch    PF9 : 7ch

@@ -1,35 +1,33 @@
 #include "Robot_kjy.h"
 
+/**********소스 내부 함수 *************/
+void Wheel_Allbreak();
+void Mix_Pwm(uint32_t* pwm);
+void BUGI_Mode1();
 
+
+/**************전역변수*************/
+uint32_t pwm[6]={0};
 
 /*
  * 타이머 구조체의 주소와 현재 RC컨트롤 상태를 입력받아 타이머를 키거나 끄는 함수
  * RC값에 따라서 역방향인지 정방향인지 정함
- *
  * ex)
- * Move_motor(&htim10,500);
- *
- *
- *
- *
+ * Move_motor(&htim10,2300);
  * */
 void ARM_Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance)
 {
-    /*if(RC_instance > STEP_FORWARD_RC){
+    if(RC_instance > STEP_FORWARD_RC){
         HAL_GPIO_WritePin(STEP_DIR_PORT,STEP_DIR_PINNUM,STEP_FORWARD);
         HAL_TIM_Base_Start_IT(htim);
     }
-    else if(RC_instance > STEP_BACKWARD_RC){
-        HAL_TIM_Base_Stop_IT(htim);
-    }
-    else{
+    else if(RC_instance < STEP_BACKWARD_RC){
         HAL_GPIO_WritePin(STEP_DIR_PORT,STEP_DIR_PINNUM,STEP_BACKWARD);
         HAL_TIM_Base_Start_IT(htim);
-    }*/
-    if(RC_instance > 3300)
-        HAL_TIM_Base_Start_IT(htim);
-    else
+    }
+    else{
         HAL_TIM_Base_Stop_IT(htim);
+    }
 }
 void ARM_Generation_pulse(TIM_HandleTypeDef* htim)
 {
@@ -42,4 +40,69 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim)
     }
 }
 
-void
+/*
+ * 모드에 따라서 조종하는 방법이 달라진다.
+ * */
+void BUGI_DriveMode(uint32_t mode)
+{
+    switch(mode)
+    {
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    }
+}
+void Wheel_Allbreak()
+{
+    Wheel_Break(WHEEL_R_U, BREAK_MAX);
+    Wheel_Break(WHEEL_L_U, BREAK_MAX);
+    Wheel_Break(WHEEL_R_M, BREAK_MAX);
+    Wheel_Break(WHEEL_L_M, BREAK_MAX);
+    Wheel_Break(WHEEL_R_D, BREAK_MAX);
+    Wheel_Break(WHEEL_L_D, BREAK_MAX);
+}
+void Mix_Pwm(uint32_t* Pwm)
+{
+    Pwm[WHEEL_R_U] += GAIN_R_U;
+    Pwm[WHEEL_L_U] += GAIN_L_U;
+    Pwm[WHEEL_R_M] += GAIN_R_M;
+    Pwm[WHEEL_L_M] += GAIN_L_M;
+    Pwm[WHEEL_R_D] += GAIN_R_D;
+    Pwm[WHEEL_L_D] += GAIN_L_D;
+}
+void BUGI_Mode1()
+{
+    uint32_t rc[MAX_CHANNEL_NUM+1]={0};
+    for(int i=1 ; i<=MAX_CHANNEL_NUM ; i++){
+        rc[i]=RC_Read(i+1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

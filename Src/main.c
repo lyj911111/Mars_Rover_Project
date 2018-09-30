@@ -62,6 +62,11 @@ TIM_HandleTypeDef htim11;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+
+
+//  1탭은 4스페이스
+
+
 /* Private variables ---------------------------------------------------------*/
 
 // Wheel_Speed, 이곳에 값을 이용.
@@ -184,9 +189,11 @@ int main(void)
       uint32_t toggle=0,limit=0;
       uint32_t direction=WHEEL_FORWARD;
       Pulse = RC_Read(2);
-      toggle = RC_Read(TOGGLE_CH);
-      limit = RC_MAX-RC_Read(LIMIT_CH)+RC_MIN;
+      toggle = RC_Read(CHANGE_GEAR);
+      limit = RC_MAX-RC_Read(LIMIT_SPEED)+RC_MIN;
       limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
+      move_pulse = math_Map(Pulse, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
+
 
       if(toggle>RC_TOGGLE_MAX)
           direction = WHEEL_FORWARD;
@@ -205,6 +212,12 @@ int main(void)
           Wheel_Contorl(3, !direction,move_pulse);
           Wheel_Contorl(4, direction,move_pulse);
           Wheel_Contorl(5, !direction,move_pulse);
+          Wheel_Break(0, 0);
+          Wheel_Break(1, 0);
+          Wheel_Break(2, 0);
+          Wheel_Break(3, 0);
+          Wheel_Break(4, 0);
+          Wheel_Break(5, 0);
       }
       else if(Pulse<=RC_MID1 && Pulse>=RC_MID2){
           Wheel_Contorl(0, direction,0);
@@ -213,23 +226,17 @@ int main(void)
           Wheel_Contorl(3, !direction,0);
           Wheel_Contorl(4, direction,0);
           Wheel_Contorl(5, !direction,0);
-          Wheel_Break(0, break_pulse);
-          Wheel_Break(1, break_pulse);
-          Wheel_Break(2, break_pulse);
-          Wheel_Break(3, break_pulse);
-          Wheel_Break(4, break_pulse);
-          Wheel_Break(5, break_pulse);
+          Wheel_Break(0, 0);
+          Wheel_Break(1, 0);
+          Wheel_Break(2, 0);
+          Wheel_Break(3, 0);
+          Wheel_Break(4, 0);
+          Wheel_Break(5, 0);
       }
       else{
           constrain(Pulse,RC_MIN,RC_MID2);
           Pulse=RC_MID2-Pulse+RC_MIN;
           break_pulse = math_Map(Pulse, RC_MIN, RC_MID2, PULSE_MIN , PULSE_MAX);
-          Wheel_Contorl(0, direction,break_pulse);
-          Wheel_Contorl(1, !direction,break_pulse);
-          Wheel_Contorl(2, direction,break_pulse);
-          Wheel_Contorl(3, !direction,break_pulse);
-          Wheel_Contorl(4, direction,break_pulse);
-          Wheel_Contorl(5, !direction,break_pulse);
           Wheel_Break(0, break_pulse);
           Wheel_Break(1, break_pulse);
           Wheel_Break(2, break_pulse);
@@ -441,6 +448,7 @@ static void MX_TIM1_Init(void)
 static void MX_TIM2_Init(void)
 {
 
+  TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
@@ -449,6 +457,17 @@ static void MX_TIM2_Init(void)
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 180;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -515,6 +534,7 @@ static void MX_TIM3_Init(void)
 static void MX_TIM4_Init(void)
 {
 
+  TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
@@ -523,6 +543,17 @@ static void MX_TIM4_Init(void)
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 180;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -567,6 +598,7 @@ static void MX_TIM4_Init(void)
 static void MX_TIM5_Init(void)
 {
 
+  TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
@@ -575,6 +607,17 @@ static void MX_TIM5_Init(void)
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 180;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
   if (HAL_TIM_PWM_Init(&htim5) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);

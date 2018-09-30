@@ -20,4 +20,25 @@
 #define STEP_BACKWARD_RC    2800
 void ARM_Move_motor(TIM_HandleTypeDef *htim,uint32_t RC_instance);
 void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
+
+/*********************************************************/
+
+#define BREAK_MAX PULSE_MAX
+#define BREAK_MIN PULSE_MIN
+
+#define GAIN_R_U    0
+#define GAIN_L_U    0
+#define GAIN_R_M    0
+#define GAIN_L_M    0
+#define GAIN_R_D    0
+#define GAIN_L_D    0
+
+#define FORWARD_BACKWARD    2
+#define MOVE_SIDE           1
+#define LIMIT_SPEED         5
+#define CHANGE_GEAR         6
+
+
+
+void BUGI_DriveMode(uint32_t mode);
 #endif
