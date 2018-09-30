@@ -3,9 +3,9 @@
 
 #include "stm32f4xx_hal.h"
 
-#define WHEEL_IDLE		2	//	정지
-#define WHEEL_FORWARD 	1	//	전진방향
-#define WHEEL_BACKWARD 	0	//	후진방향
+#define WHEEL_IDLE      2	//	정지
+#define WHEEL_FORWARD   1	//	전진방향
+#define WHEEL_BACKWARD  0	//	후진방향
 
 
 TIM_HandleTypeDef htim1;	//	앞바퀴, 중간바퀴 Pulse제어 (최대값 180)
