@@ -639,7 +639,8 @@ static void MX_TIM5_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }

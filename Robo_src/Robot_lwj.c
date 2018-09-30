@@ -81,7 +81,7 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
  * 	PD14    WhEEL_R_M
  * 	PD15    WhEEL_L_M
  *	PA0     WhEEL_R_D
- *	PA1     WhEEL_L_D
+ *	PA2     WhEEL_L_D
  *
  *	함수 Parameter.
  *		첫번째 인자 : WHEEL_R_U , WHEEL_L_U, WHEEL_R_M, WHEEL_L_M, WHEEL_R_D, WHEEL_L_D 중에 하나.
@@ -108,7 +108,7 @@ void Wheel_Break(const uint8_t Wheel_select, uint32_t Break_PWM)
 		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_1, Break_PWM);
 		break;
 	case WHEEL_L_D:
-		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, Break_PWM);
+		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, Break_PWM);
 		break;
 	}
 }
