@@ -16,12 +16,12 @@
  * 	위 3개의 인자를 받아서 바퀴를 선택하고, 그에 따른 앞 뒤 방향선택 또는 멈춤선택, 바퀴속도를 제어 0~180범위
  * 	바퀴 선 연결시 참고.
  * 	[GPIO핀]  [타이머핀]	[바퀴]
- * 	PC8		  PE9		WhEEL_R_U
- * 	PC9		  PE11		WhEEL_L_U
- * 	PC10 	  PE13		WhEEL_R_M
- * 	PC11 	  PE14		WhEEL_L_M
- *	PC12	  PA5		WhEEL_R_D
- *	PD2 	  PB10		WhEEL_L_D
+ * 	PC8		PE9			WhEEL_R_U
+ * 	PC9		PE11		WhEEL_L_U
+ * 	PC10	PE13		WhEEL_R_M
+ * 	PC11	PE14		WhEEL_L_M
+ *	PC12	PA5			WhEEL_R_D
+ *	PD2		PB10		WhEEL_L_D
  *
  *	함수 Parameter.
  *		첫번째 인자 : WHEEL_R_U , WHEEL_L_U, WHEEL_R_M, WHEEL_L_M, WHEEL_R_D, WHEEL_L_D 중에 하나.
@@ -33,7 +33,7 @@
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
-	if(Wheel_direction == WHEEL_IDLE)	//	기어 중립
+	if(Wheel_direction == WHEEL_IDLE) //기어 중립
 	{
 		PWM_Pulse = 0;
 	}
@@ -41,7 +41,7 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
 	switch (Wheel_select) // 바퀴 선택
 	{
 	case WHEEL_R_U:
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, Wheel_direction );	 //	앞뒤 방향 선택.
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, Wheel_direction );  //	앞뒤 방향 선택.
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, PWM_Pulse); //	속도 제어.
 		break;
 	case WHEEL_L_U:
