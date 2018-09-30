@@ -1,6 +1,7 @@
 #include "Robot_kjy.h"
 
 
+
 /*
  * 타이머 구조체의 주소와 현재 RC컨트롤 상태를 입력받아 타이머를 키거나 끄는 함수
  * RC값에 따라서 역방향인지 정방향인지 정함
@@ -41,3 +42,4 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim)
     }
 }
 
+void

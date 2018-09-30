@@ -2,6 +2,9 @@
 #define _ROBOT_KJY_H
 
 #include "stm32f4xx_hal.h"
+#include "Robot_lwj.h"
+#include "Robot_jhm.h"
+#include "Robot_khy.h"
 
 #define STEP_PUL_PORT       GPIOB
 #define STEP_PUL_PINNUM     GPIO_PIN_11

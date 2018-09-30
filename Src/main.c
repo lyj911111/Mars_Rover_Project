@@ -199,23 +199,43 @@ int main(void)
           constrain(Pulse,RC_MID1,RC_MAX);
           move_pulse = math_Map(Pulse, RC_MID1, RC_MAX, PULSE_MIN , PULSE_MAX);
           constrain(move_pulse,0,limit);
-          Wheel_Contorl(test_wheel, direction,move_pulse);
-          Wheel_Contorl(test_wheel1, !direction,move_pulse);
+          Wheel_Contorl(0, direction,move_pulse);
+          Wheel_Contorl(1, !direction,move_pulse);
+          Wheel_Contorl(2, direction,move_pulse);
+          Wheel_Contorl(3, !direction,move_pulse);
+          Wheel_Contorl(4, direction,move_pulse);
+          Wheel_Contorl(5, !direction,move_pulse);
       }
       else if(Pulse<=RC_MID1 && Pulse>=RC_MID2){
-          Wheel_Contorl(test_wheel, direction,0);
-          Wheel_Break(test_wheel, 0);
-          Wheel_Contorl(test_wheel1, !direction,0);
-          Wheel_Break(test_wheel1, 0);
+          Wheel_Contorl(0, direction,0);
+          Wheel_Contorl(1, !direction,0);
+          Wheel_Contorl(2, direction,0);
+          Wheel_Contorl(3, !direction,0);
+          Wheel_Contorl(4, direction,0);
+          Wheel_Contorl(5, !direction,0);
+          Wheel_Break(0, break_pulse);
+          Wheel_Break(1, break_pulse);
+          Wheel_Break(2, break_pulse);
+          Wheel_Break(3, break_pulse);
+          Wheel_Break(4, break_pulse);
+          Wheel_Break(5, break_pulse);
       }
       else{
           constrain(Pulse,RC_MIN,RC_MID2);
           Pulse=RC_MID2-Pulse+RC_MIN;
           break_pulse = math_Map(Pulse, RC_MIN, RC_MID2, PULSE_MIN , PULSE_MAX);
-          Wheel_Contorl(test_wheel, direction,0);
-          Wheel_Break(test_wheel, break_pulse);
-          Wheel_Contorl(test_wheel1, !direction,0);
-          Wheel_Break(test_wheel1, break_pulse);
+          Wheel_Contorl(0, direction,break_pulse);
+          Wheel_Contorl(1, !direction,break_pulse);
+          Wheel_Contorl(2, direction,break_pulse);
+          Wheel_Contorl(3, !direction,break_pulse);
+          Wheel_Contorl(4, direction,break_pulse);
+          Wheel_Contorl(5, !direction,break_pulse);
+          Wheel_Break(0, break_pulse);
+          Wheel_Break(1, break_pulse);
+          Wheel_Break(2, break_pulse);
+          Wheel_Break(3, break_pulse);
+          Wheel_Break(4, break_pulse);
+          Wheel_Break(5, break_pulse);
       }
 
 
