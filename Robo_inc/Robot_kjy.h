@@ -38,7 +38,31 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
 #define LIMIT_SPEED         5
 #define CHANGE_GEAR         6
 
-
+#define CH1             1
+#define CH2             2
+#define CH3             3
+#define CH4             4
+#define CH5             5
+#define CH6             6
+#define CH7             7
 
 void BUGI_DriveMode(uint32_t mode);
+void Wheel_Allbreak();
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

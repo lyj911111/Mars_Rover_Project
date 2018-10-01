@@ -2,6 +2,7 @@
 #define _ROBOT_LWJ_H
 
 #include "stm32f4xx_hal.h"
+#include "Robot_kjy.h"
 
 #define WHEEL_IDLE      2	//	정지
 #define WHEEL_FORWARD   1	//	전진방향

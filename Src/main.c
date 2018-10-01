@@ -105,6 +105,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     ARM_Generation_pulse(htim);
+    RC_CheckConut(htim);
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -114,8 +115,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-#define test_wheel  WHEEL_L_U
-#define test_wheel1 WHEEL_R_U
+
 /* USER CODE END 0 */
 
 /**
@@ -172,6 +172,8 @@ int main(void)
   HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_3);
 
+  HAL_TIM_Base_Start_IT(&htim11);
+  HAL_TIM_Base_Start_IT(&htim10);
 
   HAL_TIM_Base_Start(&htim3);
   TIM3->CNT = 0;
@@ -184,6 +186,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
       uint32_t break_pulse=0;
       uint32_t move_pulse=0;
       uint32_t toggle=0,limit=0;
@@ -200,7 +203,11 @@ int main(void)
           direction = WHEEL_IDLE;
       else if(toggle < RC_TOGGLE_MIN)
           direction = WHEEL_BACKWARD;
-
+if(!RC_CheckConnect()){
+    Wheel_Allbreak();
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
+}
+else{
       if(Pulse>RC_MID1){
           constrain(Pulse,RC_MID1,RC_MAX);
           move_pulse = math_Map(Pulse, RC_MID1, RC_MAX, PULSE_MIN , PULSE_MAX);
@@ -237,11 +244,7 @@ int main(void)
           Wheel_Break(4, break_pulse);
           Wheel_Break(5, break_pulse);
       }
-
-
-   //  sprintf(str,"%04lu\n", break_pulse);
-   //  HAL_UART_Transmit_IT(&huart3, (uint8_t*)str, (uint16_t)strlen(str));
-
+}
 
   /* USER CODE END WHILE */
 
@@ -663,7 +666,7 @@ static void MX_TIM11_Init(void)
 {
 
   htim11.Instance = TIM11;
-  htim11.Init.Prescaler = 1600;
+  htim11.Init.Prescaler = 1800;
   htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim11.Init.Period = 1000;
   htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

@@ -1,7 +1,6 @@
 #include "Robot_kjy.h"
 
 /**********소스 내부 함수 *************/
-void Wheel_Allbreak();
 void Mix_Pwm(uint32_t* pwm);
 void BUGI_Mode1();
 
@@ -55,15 +54,7 @@ void BUGI_DriveMode(uint32_t mode)
         break;
     }
 }
-void Wheel_Allbreak()
-{
-    Wheel_Break(WHEEL_R_U, BREAK_MAX);
-    Wheel_Break(WHEEL_L_U, BREAK_MAX);
-    Wheel_Break(WHEEL_R_M, BREAK_MAX);
-    Wheel_Break(WHEEL_L_M, BREAK_MAX);
-    Wheel_Break(WHEEL_R_D, BREAK_MAX);
-    Wheel_Break(WHEEL_L_D, BREAK_MAX);
-}
+
 void Mix_Pwm(uint32_t* Pwm)
 {
     Pwm[WHEEL_R_U] += GAIN_R_U;
@@ -77,8 +68,14 @@ void BUGI_Mode1()
 {
     uint32_t rc[MAX_CHANNEL_NUM+1]={0};
     for(int i=1 ; i<=MAX_CHANNEL_NUM ; i++){
-        rc[i]=RC_Read(i+1);
+        rc[i]=RC_Read(i);
     }
+    if(!RC_CheckConnect())
+        Wheel_Allbreak();
+    else{
+
+    }
+
 }
 
 

@@ -24,9 +24,13 @@
 #define RC_TOGGLE_MIN   2700UL
 #define RC_MIN          2200UL
 
+#define SAFE_ROOF       50
+
 
 void RC_Return_dutycycle(uint32_t GPIO_Pin);
 uint32_t RC_Read(uint32_t interrupt);
+uint32_t RC_CheckConnect();
+void RC_CheckConut(TIM_HandleTypeDef* htim);
 
 #endif /* ROBOT_JHM_H_ */
 /*          MAX             MIDDLE          MIN

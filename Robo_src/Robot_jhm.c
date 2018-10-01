@@ -13,6 +13,8 @@ static GPIO_InitTypeDef my_GPIO_InitStruct[7];
 GPIO_TypeDef* gpio[7]={GPIOE,GPIOE,GPIOE,       // 1 2 3
                        GPIOE,GPIOF,GPIOF,       // 4 5 6
                        GPIOF};                  // 7
+
+uint32_t check;
 /*			MAX				MIDDLE			MIN
  * CH1  	3865~3871		3032~3077		2190~2196
  * CH2		3854~3859		3029~3078		2180~2186
@@ -46,6 +48,7 @@ void RC_Return_dutycycle(uint32_t GPIO_Pin){
                 my_GPIO_InitStruct[i].Mode = GPIO_MODE_IT_RISING;
                 my_GPIO_InitStruct[i].Pull = GPIO_PULLUP;
                 HAL_GPIO_Init(gpio[i], &my_GPIO_InitStruct[i]);
+                check = 0;
             }
         }
     }
@@ -58,7 +61,21 @@ uint32_t RC_Read(uint32_t interrupt)
     return temp;
 }
 
-
+void RC_CheckConut(TIM_HandleTypeDef* htim)
+{
+    if(htim->Instance == TIM11){
+        check++;
+        if(check > SAFE_ROOF*2)
+            check =SAFE_ROOF*2;
+    }
+}
+uint32_t RC_CheckConnect()
+{
+    if(check>SAFE_ROOF)
+        return 0;
+    else
+        return 1;
+}
 
 
 

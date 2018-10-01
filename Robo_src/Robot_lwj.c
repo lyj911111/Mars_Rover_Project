@@ -28,8 +28,15 @@
  *		두번째 인자 : WHEEL_STOP, WHEEL_FORWARD , WHEEL_BACKWARD
  *		세번째 인자 : Wheel_Speed
  */
-
-
+void Wheel_Allbreak()
+{
+    Wheel_Break(WHEEL_R_U, BREAK_MAX);
+    Wheel_Break(WHEEL_L_U, BREAK_MAX);
+    Wheel_Break(WHEEL_R_M, BREAK_MAX);
+    Wheel_Break(WHEEL_L_M, BREAK_MAX);
+    Wheel_Break(WHEEL_R_D, BREAK_MAX);
+    Wheel_Break(WHEEL_L_D, BREAK_MAX);
+}
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
