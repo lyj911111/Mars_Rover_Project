@@ -10,8 +10,8 @@
 
 TIM_HandleTypeDef htim1;	//	앞바퀴, 중간바퀴 Pulse제어 (최대값 180)
 TIM_HandleTypeDef htim2;	//	뒷바퀴 Pulse제어 (최대값 180)
-TIM_HandleTypeDef htim4;
-TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim4;	//	앞바퀴, 중간바퀴 브레이크 Pulse제어 (최대값 180) 
+TIM_HandleTypeDef htim5;	//	브레이크 뒷바퀴 Pulse제어 (최대값 180)
 
 // 약어 뜻. R: Right , L: Left , M: Middle , U: Up , D: Down
 #define WHEEL_R_U 0
