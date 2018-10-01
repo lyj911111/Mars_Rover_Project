@@ -33,10 +33,6 @@
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
-	if(Wheel_direction == WHEEL_IDLE) //기어 중립
-	{
-		PWM_Pulse = 0;
-	}
 
 	switch (Wheel_select) // 바퀴 선택
 	{
@@ -61,7 +57,7 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, PWM_Pulse);
 		break;
 	case WHEEL_L_D:
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, Wheel_direction );
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, Wheel_direction );
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, PWM_Pulse);
 		break;
 	}

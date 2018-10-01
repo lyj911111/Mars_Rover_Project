@@ -170,7 +170,7 @@ int main(void)
   HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_4);
   HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_3);
 
 
   HAL_TIM_Base_Start(&htim3);
@@ -187,13 +187,12 @@ int main(void)
       uint32_t break_pulse=0;
       uint32_t move_pulse=0;
       uint32_t toggle=0,limit=0;
-      uint32_t direction=WHEEL_FORWARD;
+      uint32_t direction=0;
       Pulse = RC_Read(2);
       toggle = RC_Read(CHANGE_GEAR);
       limit = RC_MAX-RC_Read(LIMIT_SPEED)+RC_MIN;
       limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
       move_pulse = math_Map(Pulse, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
-
 
       if(toggle>RC_TOGGLE_MAX)
           direction = WHEEL_FORWARD;
@@ -212,12 +211,6 @@ int main(void)
           Wheel_Contorl(3, !direction,move_pulse);
           Wheel_Contorl(4, direction,move_pulse);
           Wheel_Contorl(5, !direction,move_pulse);
-          Wheel_Break(0, 0);
-          Wheel_Break(1, 0);
-          Wheel_Break(2, 0);
-          Wheel_Break(3, 0);
-          Wheel_Break(4, 0);
-          Wheel_Break(5, 0);
       }
       else if(Pulse<=RC_MID1 && Pulse>=RC_MID2){
           Wheel_Contorl(0, direction,0);
@@ -246,8 +239,8 @@ int main(void)
       }
 
 
-     sprintf(str,"%04lu\n", break_pulse);
-     HAL_UART_Transmit_IT(&huart3, (uint8_t*)str, (uint16_t)strlen(str));
+   //  sprintf(str,"%04lu\n", break_pulse);
+   //  HAL_UART_Transmit_IT(&huart3, (uint8_t*)str, (uint16_t)strlen(str));
 
 
   /* USER CODE END WHILE */
