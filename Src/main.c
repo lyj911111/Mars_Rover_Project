@@ -105,7 +105,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     ARM_Generation_pulse(htim);
-    RC_CheckConut(htim);
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -177,8 +176,7 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim3);
   TIM3->CNT = 0;
-  char str[100] = {0};
-  uint32_t Pulse=0;
+  uint32_t mode;
 
   /* USER CODE END 2 */
 
@@ -186,65 +184,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-      uint32_t break_pulse=0;
-      uint32_t move_pulse=0;
-      uint32_t toggle=0,limit=0;
-      uint32_t direction=0;
-      Pulse = RC_Read(2);
-      toggle = RC_Read(CHANGE_GEAR);
-      limit = RC_MAX-RC_Read(LIMIT_SPEED)+RC_MIN;
-      limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
-      move_pulse = math_Map(Pulse, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
-
-      if(toggle>RC_TOGGLE_MAX)
-          direction = WHEEL_FORWARD;
-      else if(toggle < RC_TOGGLE_MAX && toggle > RC_TOGGLE_MIN)
-          direction = WHEEL_IDLE;
-      else if(toggle < RC_TOGGLE_MIN)
-          direction = WHEEL_BACKWARD;
-if(!RC_CheckConnect()){
-    Wheel_Allbreak();
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
-}
-else{
-      if(Pulse>RC_MID1){
-          constrain(Pulse,RC_MID1,RC_MAX);
-          move_pulse = math_Map(Pulse, RC_MID1, RC_MAX, PULSE_MIN , PULSE_MAX);
-          constrain(move_pulse,0,limit);
-          Wheel_Contorl(0, direction,move_pulse);
-          Wheel_Contorl(1, !direction,move_pulse);
-          Wheel_Contorl(2, direction,move_pulse);
-          Wheel_Contorl(3, !direction,move_pulse);
-          Wheel_Contorl(4, direction,move_pulse);
-          Wheel_Contorl(5, !direction,move_pulse);
-      }
-      else if(Pulse<=RC_MID1 && Pulse>=RC_MID2){
-          Wheel_Contorl(0, direction,0);
-          Wheel_Contorl(1, !direction,0);
-          Wheel_Contorl(2, direction,0);
-          Wheel_Contorl(3, !direction,0);
-          Wheel_Contorl(4, direction,0);
-          Wheel_Contorl(5, !direction,0);
-          Wheel_Break(0, 0);
-          Wheel_Break(1, 0);
-          Wheel_Break(2, 0);
-          Wheel_Break(3, 0);
-          Wheel_Break(4, 0);
-          Wheel_Break(5, 0);
-      }
-      else{
-          constrain(Pulse,RC_MIN,RC_MID2);
-          Pulse=RC_MID2-Pulse+RC_MIN;
-          break_pulse = math_Map(Pulse, RC_MIN, RC_MID2, PULSE_MIN , PULSE_MAX);
-          Wheel_Break(0, break_pulse);
-          Wheel_Break(1, break_pulse);
-          Wheel_Break(2, break_pulse);
-          Wheel_Break(3, break_pulse);
-          Wheel_Break(4, break_pulse);
-          Wheel_Break(5, break_pulse);
-      }
-}
+    mode = Mode_select();
+    BUGI_DriveMode(mode);
 
   /* USER CODE END WHILE */
 

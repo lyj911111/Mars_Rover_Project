@@ -30,17 +30,34 @@
  */
 void Wheel_Allbreak()
 {
-    Wheel_Break(WHEEL_R_U, BREAK_MAX);
-    Wheel_Break(WHEEL_L_U, BREAK_MAX);
-    Wheel_Break(WHEEL_R_M, BREAK_MAX);
-    Wheel_Break(WHEEL_L_M, BREAK_MAX);
-    Wheel_Break(WHEEL_R_D, BREAK_MAX);
-    Wheel_Break(WHEEL_L_D, BREAK_MAX);
+  Wheel_Break(WHEEL_R_U, BREAK_MAX);
+  Wheel_Break(WHEEL_L_U, BREAK_MAX);
+  Wheel_Break(WHEEL_R_M, BREAK_MAX);
+  Wheel_Break(WHEEL_L_M, BREAK_MAX);
+  Wheel_Break(WHEEL_R_D, BREAK_MAX);
+  Wheel_Break(WHEEL_L_D, BREAK_MAX);
+}
+void Wheel_AllbreakX(uint32_t break_pulse)
+{
+  Wheel_Break(WHEEL_R_U, break_pulse);
+  Wheel_Break(WHEEL_L_U, break_pulse);
+  Wheel_Break(WHEEL_R_M, break_pulse);
+  Wheel_Break(WHEEL_L_M, break_pulse);
+  Wheel_Break(WHEEL_R_D, break_pulse);
+  Wheel_Break(WHEEL_L_D, break_pulse);
+}
+void Wheel_AllSpeedX(uint32_t speed_pulse,uint32_t direction)
+{
+  Wheel_Contorl(WHEEL_R_U,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_U,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_R_M,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_M,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_R_D,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_D,direction,speed_pulse);
 }
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
-
 	switch (Wheel_select) // 바퀴 선택
 	{
 	case WHEEL_R_U:
@@ -48,7 +65,7 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, PWM_Pulse); //	속도 제어.
 		break;
 	case WHEEL_L_U:
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, Wheel_direction );
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, !Wheel_direction );
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, PWM_Pulse);
 		break;
 	case WHEEL_R_M:
@@ -56,7 +73,7 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, PWM_Pulse);
 		break;
 	case WHEEL_L_M:
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, Wheel_direction );
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, !Wheel_direction );
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, PWM_Pulse);
 		break;
 	case WHEEL_R_D:
@@ -64,11 +81,10 @@ void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, ui
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, PWM_Pulse);
 		break;
 	case WHEEL_L_D:
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, Wheel_direction );
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, !Wheel_direction );
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, PWM_Pulse);
 		break;
 	}
-
 }
 
 //////////////////////////////////////////////////////////////

@@ -11,11 +11,11 @@
 #include "stm32f4xx_hal.h"
 #include "Robot_kjy.h"
 #include "Robot_lwj.h"
+#include "Robot_khy.h"
 
 #define Calibration1 129
 #define Calibration2 130
 #define MAX_CHANNEL_NUM 7
-#define constrain(x,a,b) if(x<a)x=a; else if(x>b) x=b;
 
 #define RC_MAX          3800UL
 #define RC_TOGGLE_MAX   3300UL
@@ -29,8 +29,6 @@
 
 void RC_Return_dutycycle(uint32_t GPIO_Pin);
 uint32_t RC_Read(uint32_t interrupt);
-uint32_t RC_CheckConnect();
-void RC_CheckConut(TIM_HandleTypeDef* htim);
 
 #endif /* ROBOT_JHM_H_ */
 /*          MAX             MIDDLE          MIN

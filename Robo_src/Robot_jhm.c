@@ -61,21 +61,7 @@ uint32_t RC_Read(uint32_t interrupt)
     return temp;
 }
 
-void RC_CheckConut(TIM_HandleTypeDef* htim)
-{
-    if(htim->Instance == TIM11){
-        check++;
-        if(check > SAFE_ROOF*2)
-            check =SAFE_ROOF*2;
-    }
-}
-uint32_t RC_CheckConnect()
-{
-    if(check>SAFE_ROOF)
-        return 0;
-    else
-        return 1;
-}
+
 
 
 

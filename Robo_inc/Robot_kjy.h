@@ -25,6 +25,8 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
 
 #define BREAK_MAX PULSE_MAX
 #define BREAK_MIN PULSE_MIN
+#define WHEEL_LEFT    0
+#define WHEEL_RIGHT   1
 
 #define GAIN_R_U    0
 #define GAIN_L_U    0
@@ -33,10 +35,11 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
 #define GAIN_R_D    0
 #define GAIN_L_D    0
 
-#define FORWARD_BACKWARD    2
-#define MOVE_SIDE           1
-#define LIMIT_SPEED         5
-#define CHANGE_GEAR         6
+#define MOVE_LINE       2
+#define MOVE_SIDE       4
+#define LIMIT_SPEED     5
+#define CHANGE_GEAR     6
+#define EMERGENCY       7
 
 #define CH1             1
 #define CH2             2
@@ -47,7 +50,7 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
 #define CH7             7
 
 void BUGI_DriveMode(uint32_t mode);
-void Wheel_Allbreak();
+uint32_t Mode_select();
 #endif
 
 
