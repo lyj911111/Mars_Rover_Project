@@ -3,6 +3,7 @@
 /**********소스 내부 함수 *************/
 void Mix_Pwm(uint32_t* Pwm_speed);
 void Push_speed(uint32_t* Pwm_speed , uint32_t* Direction);
+void Push_break(uint32_t* Pwm_break);
 void BUGI_Mode1();
 void BUGI_Mode2();
 void BUGI_Mode3();
@@ -55,7 +56,7 @@ void BUGI_DriveMode(uint32_t mode)
     switch(mode)
     {
     case 0:
-      Wheel_Allbreak();
+      Wheel_AllbreakX(0);
       just_one_mode1=1;
       just_one_mode2=1;
       just_one_mode3=1;
@@ -98,6 +99,7 @@ void Mix_Pwm(uint32_t* Pwm_speed)
   Pwm_speed[WHEEL_R_D] += GAIN_R_D;
   Pwm_speed[WHEEL_L_D] += GAIN_L_D;
 }
+
 void Push_speed(uint32_t* Pwm_speed , uint32_t* Direction)
 {
   Mix_Pwm(Pwm_speed);
@@ -106,6 +108,12 @@ void Push_speed(uint32_t* Pwm_speed , uint32_t* Direction)
   }
 }
 
+void Push_break(uint32_t* Pwm_break)
+{
+  for(int i=0 ;i<6 ;i++){
+    Wheel_Break(i,Pwm_break[i]);
+  }
+}
 
 void BUGI_Mode1()
 {
@@ -118,6 +126,7 @@ void BUGI_Mode1()
     just_one_mode2=1;
     just_one_mode3=1;
     Wheel_AllbreakX(0);
+    Wheel_AllSpeedX(0,WHEEL_FORWARD);
   }
   if(line > RC_MID1){
     constrain(line,RC_MID1,RC_MAX);
@@ -132,8 +141,9 @@ void BUGI_Mode1()
       side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);
       dir = WHEEL_RIGHT;
     }
-    else if(side > RC_MID2)
+    else if(side > RC_MID2){
       side = 0;
+    }
     else{
       constrain(side,RC_MIN,RC_MID2);
       side = RC_MID2 - side + RC_MIN;
@@ -145,14 +155,19 @@ void BUGI_Mode1()
     for(int i=0;i<6;i++){
       if(i%2==dir){
         pwm_speed[i]=line;
+        pwm_break[i] = 0;
         constrain(pwm_speed[i],0,limit);
       }
       else{
-        pwm_speed[i]=line-side;
+        //pwm_speed[i]=line-side;
+        pwm_speed[i]=0;
+        pwm_break[i] = side;
         constrain(pwm_speed[i],0,limit);
       }
+
     }
     Push_speed(pwm_speed,direction);
+    Push_break(pwm_break);
   }
   else if(line > RC_MID2){
     Wheel_AllSpeedX(0,WHEEL_FORWARD );
