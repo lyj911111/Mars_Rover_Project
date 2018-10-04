@@ -118,59 +118,67 @@ void Push_break(uint32_t* Pwm_break)
 void BUGI_Mode1()
 {
   uint32_t line=RC_Read(MOVE_LINE),side=RC_Read(MOVE_SIDE),limit=RC_Read(LIMIT_SPEED);
-  static uint32_t dir=0;
+  static uint32_t dir=0,wheel_dir=WHEEL_FORWARD;
   if(just_one_mode1){
+    wheel_dir = WHEEL_FORWARD;
     for(int i=0;i<6;i++)
-      direction[i]=WHEEL_FORWARD;
+      direction[i]=wheel_dir;
     just_one_mode1=0;
     just_one_mode2=1;
     just_one_mode3=1;
     Wheel_AllbreakX(0);
-    Wheel_AllSpeedX(0,WHEEL_FORWARD);
+    Wheel_AllSpeedX(0,wheel_dir);
   }
   if(line > RC_MID1){
     constrain(line,RC_MID1,RC_MAX);
     constrain(limit,RC_MIN,RC_MAX);
+    limit = RC_MAX - limit + RC_MIN;
     line  = math_Map(line, RC_MID1, RC_MAX, PULSE_MIN, PULSE_MAX);
     limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
     constrain(line,PULSE_MIN,limit);
 
     if(side > RC_MID1){
-      constrain(side,RC_MID1,RC_MAX);
+      /*constrain(side,RC_MID1,RC_MAX);
       side  = math_Map(side, RC_MID1, RC_MAX, PULSE_MIN, PULSE_MAX);
-      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);
-      dir = WHEEL_RIGHT;
+      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);*/
+      side = line;
+      if(wheel_dir==WHEEL_FORWARD)
+        dir = WHEEL_RIGHT;
+      else
+        dir = WHEEL_LEFT;
     }
     else if(side > RC_MID2){
       side = 0;
     }
     else{
-      constrain(side,RC_MIN,RC_MID2);
+      /*constrain(side,RC_MIN,RC_MID2);
       side = RC_MID2 - side + RC_MIN;
       side  = math_Map(side, RC_MIN, RC_MID2, PULSE_MIN, PULSE_MAX);
-      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);
-      dir = WHEEL_LEFT;
+      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);*/
+      side = line;
+      if(wheel_dir==WHEEL_BACKWARD)
+        dir = WHEEL_LEFT;
+      else
+        dir = WHEEL_RIGHT;
     }
 
     for(int i=0;i<6;i++){
       if(i%2==dir){
-        pwm_speed[i]=line;
+        pwm_speed[i] = line;
         pwm_break[i] = 0;
         constrain(pwm_speed[i],0,limit);
       }
       else{
-        //pwm_speed[i]=line-side;
-        pwm_speed[i]=0;
-        pwm_break[i] = side;
+        pwm_speed[i] = line-side;
+        pwm_break[i] = (side!=0)*PULSE_MAX;
         constrain(pwm_speed[i],0,limit);
       }
-
     }
     Push_speed(pwm_speed,direction);
     Push_break(pwm_break);
   }
   else if(line > RC_MID2){
-    Wheel_AllSpeedX(0,WHEEL_FORWARD );
+    Wheel_AllSpeedX(0,wheel_dir );
     Wheel_AllbreakX(0);
   }
   else {
@@ -178,8 +186,8 @@ void BUGI_Mode1()
     line = math_Map(line, RC_MIN, RC_MID2, PULSE_MIN, PULSE_MAX);
     line = PULSE_MAX - line + PULSE_MIN;
     Wheel_AllbreakX(line);
+    Wheel_AllSpeedX(0,wheel_dir);
   }
-
 }
 
 void BUGI_Mode2()
@@ -228,57 +236,75 @@ void BUGI_Mode2()
 void BUGI_Mode3()
 {
   uint32_t line=RC_Read(MOVE_LINE),side=RC_Read(MOVE_SIDE),limit=RC_Read(LIMIT_SPEED);
-  uint32_t dir=0;
-  if(just_one_mode3){
+  static uint32_t dir=0,wheel_dir=WHEEL_BACKWARD;
+  if(just_one_mode1){
+    wheel_dir = WHEEL_BACKWARD;
     for(int i=0;i<6;i++)
-      direction[i]=WHEEL_BACKWARD;
-    just_one_mode1=1;
+      direction[i]=wheel_dir;
+    just_one_mode1=0;
     just_one_mode2=1;
-    just_one_mode3=0;
+    just_one_mode3=1;
     Wheel_AllbreakX(0);
+    Wheel_AllSpeedX(0,wheel_dir);
   }
-  constrain(line,RC_MIN,RC_MAX);
-  constrain(side,RC_MIN,RC_MAX);
-
   if(line > RC_MID1){
+    constrain(line,RC_MID1,RC_MAX);
+    constrain(limit,RC_MIN,RC_MAX);
+    limit = RC_MAX - limit + RC_MIN;
     line  = math_Map(line, RC_MID1, RC_MAX, PULSE_MIN, PULSE_MAX);
     limit = math_Map(limit, RC_MIN, RC_MAX, PULSE_MIN, PULSE_MAX);
     constrain(line,PULSE_MIN,limit);
 
     if(side > RC_MID1){
+      /*constrain(side,RC_MID1,RC_MAX);
       side  = math_Map(side, RC_MID1, RC_MAX, PULSE_MIN, PULSE_MAX);
-      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);
-      dir = WHEEL_RIGHT;
+      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);*/
+      side = line;
+      if(wheel_dir==WHEEL_BACKWARD)
+        dir = WHEEL_RIGHT;
+      else
+        dir = WHEEL_LEFT;
     }
-    else if(side > RC_MID2)
+    else if(side > RC_MID2){
       side = 0;
+    }
     else{
+      /*constrain(side,RC_MIN,RC_MID2);
       side = RC_MID2 - side + RC_MIN;
       side  = math_Map(side, RC_MIN, RC_MID2, PULSE_MIN, PULSE_MAX);
-      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);
-      dir = WHEEL_LEFT;
+      side  = math_Map(side, PULSE_MIN, PULSE_MAX, PULSE_MIN, line);*/
+      side = line;
+      if(wheel_dir==WHEEL_FORWARD)
+        dir = WHEEL_LEFT;
+      else
+        dir = WHEEL_RIGHT;
     }
 
     for(int i=0;i<6;i++){
       if(i%2==dir){
-        pwm_speed[i]=line;
+        pwm_speed[i] = line;
+        pwm_break[i] = 0;
         constrain(pwm_speed[i],0,limit);
       }
       else{
-        pwm_speed[i]=line-side;
+        pwm_speed[i] = line-side;
+        pwm_break[i] = (side!=0)*PULSE_MAX;
         constrain(pwm_speed[i],0,limit);
       }
     }
     Push_speed(pwm_speed,direction);
+    Push_break(pwm_break);
   }
   else if(line > RC_MID2){
-    Wheel_AllSpeedX(0,0);
+    Wheel_AllSpeedX(0,wheel_dir );
     Wheel_AllbreakX(0);
   }
   else {
+    constrain(line,RC_MIN,RC_MID2);
     line = math_Map(line, RC_MIN, RC_MID2, PULSE_MIN, PULSE_MAX);
     line = PULSE_MAX - line + PULSE_MIN;
     Wheel_AllbreakX(line);
+    Wheel_AllSpeedX(0,wheel_dir);
   }
 }
 

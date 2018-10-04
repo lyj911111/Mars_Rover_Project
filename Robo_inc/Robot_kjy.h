@@ -25,8 +25,14 @@ void ARM_Generation_pulse(TIM_HandleTypeDef* htim);
 
 #define BREAK_MAX PULSE_MAX
 #define BREAK_MIN PULSE_MIN
+
+#if WHEEL_FORWARD == 1
 #define WHEEL_LEFT    0
 #define WHEEL_RIGHT   1
+#elif WHEEL_FORWARD == 0
+#define WHEEL_LEFT    1
+#define WHEEL_RIGHT   0
+#endif
 
 #define GAIN_R_U    0
 #define GAIN_L_U    0
