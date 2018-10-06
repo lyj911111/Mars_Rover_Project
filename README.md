@@ -45,6 +45,40 @@ RC컨트롤러를 이용한 로봇조종. Nucleo-429보드사용 (STM32F429ZI MC
 3. 컴파일러
 - AC6 GCC toolchain
 
+# Missions
+
+- Mission 1 
+
+Overcome harsh environment consisting of sand, gravel and bushes.
+
+모래, 자갈, 수풀로 구성 된 거친 외부 환경 극복.
+
+![mission1](https://user-images.githubusercontent.com/36121225/46573916-aef0c880-c9d6-11e8-858d-849ff35cbd6f.PNG)
+
+
+- Mission 2
+
+Step up on the stair and slide down with slope way and pass through rough road.
+
+계단을 올라간 후 경사로에서 내려와 울퉁불퉁한 길 통과.
+
+![mission2](https://user-images.githubusercontent.com/36121225/46573919-b2844f80-c9d6-11e8-9437-ffa4c92a875e.PNG)
+
+
+- Mission 3
+
+Open & Close the door and pick up the item to destination (Never not drag)
+
+문을 개폐 후 물건을 집고 목적지로 이동 (끌어서 이동 불가)
+
+![mission3](https://user-images.githubusercontent.com/36121225/46573920-b57f4000-c9d6-11e8-92a6-d91e0f388a5c.PNG)
+
+- Mission 4 
+
+Go the linear route from start point to end point as soon as possible. (Arrival record competition)
+
+빠른 속도로 목적지까지 이동 (시간 기록 경기)
+
 # Mechanical Design
 ![hardware](https://user-images.githubusercontent.com/36121225/46571576-442d9600-c9b2-11e8-9ed8-f2d2a17cf051.jpg)
 
