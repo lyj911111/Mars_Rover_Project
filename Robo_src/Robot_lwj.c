@@ -8,7 +8,7 @@
  */
 #include "Robot_lwj.h"
 
-
+// 바퀴 전체 All Stop
 void Wheel_Allbreak()
 {
   Wheel_Break(WHEEL_R_U, BREAK_MAX);
@@ -18,6 +18,8 @@ void Wheel_Allbreak()
   Wheel_Break(WHEEL_R_D, BREAK_MAX);
   Wheel_Break(WHEEL_L_D, BREAK_MAX);
 }
+
+// 모든 바퀴에 일정한 Break를 가함.
 void Wheel_AllbreakX(uint32_t break_pulse)
 {
   Wheel_Break(WHEEL_R_U, break_pulse);
@@ -27,6 +29,8 @@ void Wheel_AllbreakX(uint32_t break_pulse)
   Wheel_Break(WHEEL_R_D, break_pulse);
   Wheel_Break(WHEEL_L_D, break_pulse);
 }
+
+// 모든 바퀴에 특정한 Speed를 가함. (방향 앞, 뒤 설정)
 void Wheel_AllSpeedX(uint32_t speed_pulse,uint32_t direction)
 {
   Wheel_Contorl(WHEEL_R_U,direction,speed_pulse);
