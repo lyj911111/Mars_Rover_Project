@@ -20,5 +20,14 @@ It is controlled by a pilot utilizing RC-Controller which is wirelessly communic
 3. Compiler / Interpreter
 - AC6 GCC toolchain
 
+# Mechanical Design
+![hardware](https://user-images.githubusercontent.com/36121225/46571576-442d9600-c9b2-11e8-9ed8-f2d2a17cf051.jpg)
+
+![top](https://user-images.githubusercontent.com/36121225/46571577-468ff000-c9b2-11e8-9c6f-ee4d1c3acaab.jpg)
+
+![side](https://user-images.githubusercontent.com/36121225/46571579-4859b380-c9b2-11e8-9a2d-83107983cf11.jpg)
+
+![front](https://user-images.githubusercontent.com/36121225/46571580-4a237700-c9b2-11e8-91f6-b111f741f88c.jpg)
+
 # Completed Robot
 ![baby_buggy](https://user-images.githubusercontent.com/36121225/46571022-8fdb4200-c9a8-11e8-81ae-7f5229fb6037.PNG)
