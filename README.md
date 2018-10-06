@@ -29,5 +29,5 @@ It is controlled by a pilot utilizing RC-Controller which is wirelessly communic
 
 ![front](https://user-images.githubusercontent.com/36121225/46571580-4a237700-c9b2-11e8-91f6-b111f741f88c.jpg)
 
-# Completed Robot
+# Completed Robot (Version 1.0.0)
 ![baby_buggy](https://user-images.githubusercontent.com/36121225/46571022-8fdb4200-c9a8-11e8-81ae-7f5229fb6037.PNG)
