@@ -1,6 +1,8 @@
 # Mars_Rover_Project
 
-This is the Part of the Defense Robot Project of 20th Korea Intelligent Robot Competition 
+This is the Part of the Defense Robot Project of 20th Korea Intelligent Robot Competition.
+
+제 20회 한국지능로봇경진대회 국방로봇부문 프로젝트 부문.
 
 # About Team
 
@@ -8,16 +10,39 @@ This is the Part of the Defense Robot Project of 20th Korea Intelligent Robot Co
 
 Consist of 7 members as a Team named "Hello World", The Robot name is "Baby Buggy".
 
-Collaboration : Won-Jae Lee, Ju-Young Park, Hyeong-Min Jeon, Hee-Yeun Kim, Jae-Yun Choi, Jong-Ik Eun, Soon-Hwan An
-
+Collaboration : Won-Jae Lee, Ju-Young Kim, Hyeong-Min Jeon, Hee-Yeun Kim, Jae-Un Choi, Jong-Ik Eun, Soon-Hwan An
 
 It is controlled by a pilot utilizing RC-Controller which is wirelessly communicated with Nucleo-429 board (embedded STM32F429ZI MCU) using Receiver.
+
+2018년 10월 한국폴리텍대학 융합기술교육원 조영준 교수님 지도 하 7명.
+
+팀명: "헬로 월드", 로봇명: "베이비 버기".
+
+참여자: 이원재, 김주영, 전형민, 김희연, 최재운, 은종익, 안순환.
+
+RC컨트롤러를 이용한 로봇조종. Nucleo-429보드사용 (STM32F429ZI MCU내장)
 
 # Development Enviroment
 1. IDE
 - STM32 Cube MX, SW4STM32
-2. SCM: GIT, SourceTree
+2. SCM
+- GIT 
+
+- SourceTree
+
 3. Compiler / Interpreter
+- AC6 GCC toolchain
+
+-------------------------
+
+1. 통합개발환경
+- STM32 Cube MX, SW4STM32
+2. 버전 관리
+- GIT
+
+- SourceTree
+
+3. 컴파일러
 - AC6 GCC toolchain
 
 # Mechanical Design
