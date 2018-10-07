@@ -58,7 +58,7 @@ Overcome harsh environment consisting of sand, gravel and bushes.
 
 - Mission 2
 
-Step up on the stair and slide down with slope way and pass through rough road.
+Go up the stairs and slide down the slope way, after then pass the rough road.
 
 계단을 올라간 후 경사로에서 내려와 울퉁불퉁한 길 통과.
 
@@ -67,7 +67,7 @@ Step up on the stair and slide down with slope way and pass through rough road.
 
 - Mission 3
 
-Open & Close the door and pick up the item to destination (Never not drag)
+After Opening & Closing the door, and pick up the item  and move it to destination (Never not drag)
 
 문을 개폐 후 물건을 집고 목적지로 이동 (끌어서 이동 불가)
 
@@ -75,7 +75,7 @@ Open & Close the door and pick up the item to destination (Never not drag)
 
 - Mission 4 
 
-Go the linear route from start point to end point as soon as possible. (Arrival record competition)
+Go the straight path from start point to end point as soon as possible. (Arrival record competition)
 
 빠른 속도로 목적지까지 이동 (시간 기록 경기)
 
