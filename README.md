@@ -8,7 +8,7 @@ This is the Part of the Defense Robot Project of 20th Korea Intelligent Robot Co
 
 7 members who are Korea Polytechnic convergence centre under the guidance of prof. Young-Joon Jo, 2018. Oct.
 
-Consist of 7 members as a Team named "Hello World", The Robot name is "Baby Buggy".
+The team name is "Hello World" and robot name is "Baby Buggy".
 
 Collaboration : Won-Jae Lee, Ju-Young Kim, Hyeong-Min Jeon, Hee-Yeun Kim, Jae-Un Choi, Jong-Ik Eun, Soon-Hwan An
 
