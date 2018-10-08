@@ -680,7 +680,6 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11|Red_LED_Pin|Blue_LED_Pin, GPIO_PIN_RESET);
@@ -691,9 +690,6 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Interrupt_Watchdog_test_GPIO_Port, Interrupt_Watchdog_test_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : GPIO_EXTI3_Pin GPIO_EXTI4_Pin GPIO_EXTI5_Pin GPIO_EXTI6_Pin */
   GPIO_InitStruct.Pin = GPIO_EXTI3_Pin|GPIO_EXTI4_Pin|GPIO_EXTI5_Pin|GPIO_EXTI6_Pin;
@@ -742,13 +738,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : Interrupt_Watchdog_test_Pin */
-  GPIO_InitStruct.Pin = Interrupt_Watchdog_test_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Interrupt_Watchdog_test_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
