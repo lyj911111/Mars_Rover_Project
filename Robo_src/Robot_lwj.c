@@ -138,6 +138,30 @@ void Wheel_Break(const uint8_t Wheel_select, uint32_t Break_PWM)
 	}
 }
 
+//////////////////////////////////////////////////////////////
+/*
+ * 	WatchDog 함수.
+ * 	함수 사용법 : 1초이상 응답이 없을 시, 시스템을 재부팅하는 함수.
+ * 			  WatchDog이 필요한 곳에 함수를 넣으면 된다.
+ *			  PG11 핀에 LED를 달아 시스템이 재부팅 되었나 확인 할 수 있다.
+ */
+
+void Watch_Dog(void)
+{
+	__HAL_IWDG_RELOAD_COUNTER(&hiwdg);   //  System이 Reset되지 않도록 카운트한다. (1초이상되면 리셋)
+
+	// 시스템이 재부팅 되었는지 확인하는 함수.
+	if(RESET != __HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST))
+	{
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_12, GPIO_PIN_SET);  // LED로 재부팅 여부 확인.
+		__HAL_RCC_CLEAR_RESET_FLAGS();
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_12, GPIO_PIN_RESET);
+	}
+}
+
 
 
 

@@ -74,6 +74,8 @@
 #define GPIO_EXTI9_EXTI_IRQn EXTI9_5_IRQn
 #define Red_LED_Pin GPIO_PIN_14
 #define Red_LED_GPIO_Port GPIOB
+#define Interrupt_Watchdog_test_Pin GPIO_PIN_12
+#define Interrupt_Watchdog_test_GPIO_Port GPIOG
 #define Blue_LED_Pin GPIO_PIN_7
 #define Blue_LED_GPIO_Port GPIOB
 

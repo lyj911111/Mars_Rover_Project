@@ -12,6 +12,7 @@ TIM_HandleTypeDef htim1;	//	앞바퀴, 중간바퀴 Pulse제어 (최대값 180)
 TIM_HandleTypeDef htim2;	//	뒷바퀴 Pulse제어 (최대값 180)
 TIM_HandleTypeDef htim4;	//	앞바퀴, 중간바퀴 브레이크 Pulse제어 (최대값 180) 
 TIM_HandleTypeDef htim5;	//	브레이크 뒷바퀴 Pulse제어 (최대값 180)
+IWDG_HandleTypeDef hiwdg;	//	와치독
 
 // 약어 뜻. R: Right , L: Left , M: Middle , U: Up , D: Down
 #define WHEEL_R_U 0
@@ -28,5 +29,6 @@ void Wheel_Break(const uint8_t Wheel_select, uint32_t Break_PWM);
 void Wheel_Allbreak();
 void Wheel_AllbreakX(uint32_t break_pulse);
 void Wheel_AllSpeedX(uint32_t speed_pulse,uint32_t direction);
+void Watch_Dog(void);
 
 #endif
