@@ -8,6 +8,39 @@
  */
 #include "Robot_lwj.h"
 
+// 바퀴 전체 All Stop
+void Wheel_Allbreak()
+{
+  Wheel_Break(WHEEL_R_U, BREAK_MAX);
+  Wheel_Break(WHEEL_L_U, BREAK_MAX);
+  Wheel_Break(WHEEL_R_M, BREAK_MAX);
+  Wheel_Break(WHEEL_L_M, BREAK_MAX);
+  Wheel_Break(WHEEL_R_D, BREAK_MAX);
+  Wheel_Break(WHEEL_L_D, BREAK_MAX);
+}
+
+// 모든 바퀴에 일정한 Break를 가함.
+void Wheel_AllbreakX(uint32_t break_pulse)
+{
+  Wheel_Break(WHEEL_R_U, break_pulse);
+  Wheel_Break(WHEEL_L_U, break_pulse);
+  Wheel_Break(WHEEL_R_M, break_pulse);
+  Wheel_Break(WHEEL_L_M, break_pulse);
+  Wheel_Break(WHEEL_R_D, break_pulse);
+  Wheel_Break(WHEEL_L_D, break_pulse);
+}
+
+// 모든 바퀴에 특정한 Speed를 가함. (방향 앞, 뒤 설정)
+void Wheel_AllSpeedX(uint32_t speed_pulse,uint32_t direction)
+{
+  Wheel_Contorl(WHEEL_R_U,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_U,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_R_M,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_M,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_R_D,direction,speed_pulse);
+  Wheel_Contorl(WHEEL_L_D,direction,speed_pulse);
+}
+
 //////////////////////////////////////////////////////////////
 /*
  * 	바퀴 컨트롤 함수.
@@ -28,33 +61,6 @@
  *		두번째 인자 : WHEEL_STOP, WHEEL_FORWARD , WHEEL_BACKWARD
  *		세번째 인자 : Wheel_Speed
  */
-void Wheel_Allbreak()
-{
-  Wheel_Break(WHEEL_R_U, BREAK_MAX);
-  Wheel_Break(WHEEL_L_U, BREAK_MAX);
-  Wheel_Break(WHEEL_R_M, BREAK_MAX);
-  Wheel_Break(WHEEL_L_M, BREAK_MAX);
-  Wheel_Break(WHEEL_R_D, BREAK_MAX);
-  Wheel_Break(WHEEL_L_D, BREAK_MAX);
-}
-void Wheel_AllbreakX(uint32_t break_pulse)
-{
-  Wheel_Break(WHEEL_R_U, break_pulse);
-  Wheel_Break(WHEEL_L_U, break_pulse);
-  Wheel_Break(WHEEL_R_M, break_pulse);
-  Wheel_Break(WHEEL_L_M, break_pulse);
-  Wheel_Break(WHEEL_R_D, break_pulse);
-  Wheel_Break(WHEEL_L_D, break_pulse);
-}
-void Wheel_AllSpeedX(uint32_t speed_pulse,uint32_t direction)
-{
-  Wheel_Contorl(WHEEL_R_U,direction,speed_pulse);
-  Wheel_Contorl(WHEEL_L_U,direction,speed_pulse);
-  Wheel_Contorl(WHEEL_R_M,direction,speed_pulse);
-  Wheel_Contorl(WHEEL_L_M,direction,speed_pulse);
-  Wheel_Contorl(WHEEL_R_D,direction,speed_pulse);
-  Wheel_Contorl(WHEEL_L_D,direction,speed_pulse);
-}
 
 void Wheel_Contorl(const uint8_t Wheel_select, const uint8_t Wheel_direction, uint32_t PWM_Pulse) // 타이머 Pulse 최대값: 180 (최고속도)
 {
@@ -129,6 +135,30 @@ void Wheel_Break(const uint8_t Wheel_select, uint32_t Break_PWM)
 	case WHEEL_L_D:
 		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, Break_PWM);
 		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////
+/*
+ *  WatchDog 함수.
+ *  함수 사용법 : 0.5초이상 응답이 없을 시, 시스템을 재부팅하는 함수.
+ *            WatchDog이 필요한 곳에 함수를 넣으면 된다.
+ *            오작동으로 인한 시스템 재부팅시 보드의 빨간색 LED에 불이 들어온다. (즉, Watchdog에 의한 재부팅)
+ */
+
+void Watch_Dog(void)
+{
+	__HAL_IWDG_RELOAD_COUNTER(&hiwdg);   //  System이 Reset되지 않도록 지속적인 카운트한다. (0.5초이상되면 리셋)
+
+	// 시스템이 재부팅 되었는지 확인하는 함수.
+	if(RESET != __HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST))
+	{
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);  // 빨간색 LED로 재부팅 여부 확인.
+		__HAL_RCC_CLEAR_RESET_FLAGS();
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
 	}
 }
 
