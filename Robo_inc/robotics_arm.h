@@ -40,15 +40,21 @@ Header1 Header2 Header3 Reserved  Packet_ID Length1 Length2 Instruction Param Pa
 #define MAX_SERVO_ROBOTICS    4095
 #define MIN_SERVO_ROBOTICS    0
 
-#define MAX_SHOULDER      3000
-#define MIN_SHOULDER      1000
+#define MAX_SHOULDER          3000
+#define MIN_SHOULDER          1000
 
-#define MAX_KNEE          2500
-#define MIN_KNEE          1500
+#define MAX_ELBOW             2500
+#define MIN_ELBOW             1500
 
-#define MASTER_ID       0xFE
-#define SERVO1_ID       0x01
-#define SERVO2_ID       0x02
+#define MASTER_ID             0xFE
+#define SERVO1_ID             0x01
+#define SERVO2_ID             0x02
+
+#define SHOULDER_ID           0x02
+#define ELBOW_ID              0x01
+
+#define ELBOW_POSTION         0x0A
+#define SHOULDER_POSTION      0x0A
 
 void arm_write_ram(uint8_t id,uint8_t reg,uint32_t data);
 void arm_write_eeprom(uint8_t id,uint8_t reg,uint32_t data);
