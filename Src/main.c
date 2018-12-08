@@ -45,12 +45,11 @@
 #include "Robot_lwj.h"
 #include "Robot_jhm.h"
 #include "Robot_khy.h"
+#include "robotics_arm.h"
 #include <string.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-IWDG_HandleTypeDef hiwdg;
-
 RTC_HandleTypeDef hrtc;
 
 TIM_HandleTypeDef htim1;
@@ -59,6 +58,7 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim8;
+TIM_HandleTypeDef htim9;
 
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
@@ -88,10 +88,10 @@ static void MX_RTC_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM5_Init(void);
-static void MX_IWDG_Init(void);
 static void MX_TIM8_Init(void);
 static void MX_USART2_UART_Init(void);
-
+static void MX_TIM9_Init(void);
+                                    
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
                                 
@@ -153,9 +153,9 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
-  MX_IWDG_Init();
   MX_TIM8_Init();
   MX_USART2_UART_Init();
+  MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);	// 6개 바퀴 PWM발생. (주기 5kHz 발생)
@@ -172,23 +172,17 @@ int main(void)
   HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start_IT(&htim5, TIM_CHANNEL_3);
 
-  HAL_TIM_PWM_Start_IT(&htim8, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start_IT(&htim8, TIM_CHANNEL_2);
 
   HAL_TIM_Base_Start(&htim3);
   TIM3->CNT = 0;
   uint32_t mode;
-  servo_enable(SERVO1_ID,1);
-  __HAL_IWDG_START(&hiwdg);		//	와치독 시작.
-
+  ARM_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	Watch_Dog();				//	0.5초 이상 while문 내를 벗어나면 시스템 리셋.
-
     mode = Mode_select();
     BUGI_DriveMode(mode);
 
@@ -219,12 +213,10 @@ void SystemClock_Config(void)
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI
-                              |RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 8;
@@ -274,20 +266,6 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-}
-
-/* IWDG init function */
-static void MX_IWDG_Init(void)
-{
-
-  hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_32;
-  hiwdg.Init.Reload = 500;
-  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
 }
 
 /* RTC init function */
@@ -664,6 +642,35 @@ static void MX_TIM8_Init(void)
   }
 
   HAL_TIM_MspPostInit(&htim8);
+
+}
+
+/* TIM9 init function */
+static void MX_TIM9_Init(void)
+{
+
+  TIM_OC_InitTypeDef sConfigOC;
+
+  htim9.Instance = TIM9;
+  htim9.Init.Prescaler = 1800;
+  htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim9.Init.Period = 1000;
+  htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_PWM_Init(&htim9) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 250;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  HAL_TIM_MspPostInit(&htim9);
 
 }
 
